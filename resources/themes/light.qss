@@ -1,0 +1,133 @@
+/* ── Premium Modern Light Theme ──────────────── */
+
+QMainWindow, QDialog {
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+}
+
+QWidget {
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    font-family: "Segoe UI Semibold", "Inter", sans-serif;
+    font-size: 13px;
+}
+
+/* ── Menu ── */
+QMenuBar {
+    background-color: #ffffff;
+    color: #1d1d1f;
+    border-bottom: 1px solid #e5e5e7;
+    padding: 6px;
+}
+QMenuBar::item:selected {
+    background-color: #f0f0f2;
+    border-radius: 6px;
+}
+QMenu {
+    background-color: #ffffff;
+    color: #1d1d1f;
+    border: 1px solid #e5e5e7;
+    border-radius: 10px;
+    padding: 8px;
+}
+QMenu::item:selected {
+    background-color: #0071e3;
+    color: #ffffff;
+}
+
+/* ── Toolbar ── */
+QToolBar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e5e7;
+    padding: 8px 15px;
+    spacing: 12px;
+}
+QToolBar QToolButton {
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    border: 1px solid #e5e5e7;
+    border-radius: 8px;
+    padding: 8px 15px;
+    font-weight: bold;
+}
+QToolBar QToolButton:hover {
+    background-color: #e5e5e7;
+    border-color: #0071e3;
+}
+
+/* ── Tab Widget ── */
+QTabWidget::pane {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e7;
+    border-radius: 12px;
+    margin: 10px;
+}
+QTabBar::tab {
+    background-color: transparent;
+    color: #86868b;
+    padding: 12px 25px;
+    margin-right: 5px;
+    font-weight: bold;
+}
+QTabBar::tab:selected {
+    color: #0071e3;
+    border-bottom: 3px solid #0071e3;
+}
+
+/* ── Table View ── */
+QTableView {
+    background-color: #ffffff;
+    color: #1d1d1f;
+    gridline-color: #f5f5f7;
+    border: none;
+    selection-background-color: #e8f2ff;
+    selection-color: #0071e3;
+    alternate-background-color: #fafafa;
+}
+
+/* ── List Widget ── */
+QListWidget {
+    background-color: #ffffff;
+    border: none;
+    border-right: 1px solid #e5e5e7;
+}
+QListWidget::item {
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: 2px 8px;
+}
+QListWidget::item:selected {
+    background-color: #0071e3;
+    color: #ffffff;
+}
+
+/* ── KPI Card ── */
+QFrame#kpiCard {
+    background-color: #ffffff;
+    border: 1px solid #e5e5e7;
+    border-radius: 15px;
+}
+QLabel#kpiValue {
+    color: #0071e3;
+    font-size: 32px;
+    font-weight: 900;
+}
+QLabel#kpiLabel {
+    color: #86868b;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* ── Buttons ── */
+QPushButton {
+    background-color: #0071e3;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+QPushButton:hover {
+    background-color: #0077ed;
+}
