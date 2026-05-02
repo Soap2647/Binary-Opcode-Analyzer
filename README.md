@@ -39,12 +39,6 @@
 
 ---
 
-## 📸 Screenshots | Ekran Görüntüleri
-
-*(Buraya uygulamanın görsellerini ekleyebilirsiniz)*
-
----
-
 ## 📥 Installation | Kurulum
 
 ### Prerequisites | Gereksinimler
