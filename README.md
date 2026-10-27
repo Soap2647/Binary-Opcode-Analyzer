@@ -1,78 +1,89 @@
-# 🛡️ Binary Opcode Analyzer (Binary Opcode Analiz Aracı)
+<div align="center">
 
-![Version](https://img.shields.io/badge/version-2.0-blue.svg)
-![C++](https://img.shields.io/badge/C++-17-00599C?logo=cplusplus)
-![Qt](https://img.shields.io/badge/Qt-6.0+-41CD52?logo=qt)
+# 🛡️ Binary Opcode Analyzer
 
-**Binary Opcode Analyzer** is a powerful, modern, and professional tool designed to analyze the instruction sets of compiled binary files. Unlike basic analyzers, it supports real-world executables (EXE, DLL, SYS, BIN, ELF) and provides deep insights into x86 architecture distribution, entropy, and code structure.
+**A Qt desktop tool that looks inside compiled binaries: x86 opcode distribution, Shannon entropy,
+disassembly and side-by-side comparison**
 
-**Binary Opcode Analiz Aracı**, derlenmiş binary dosyaların talimat setlerini analiz etmek için tasarlanmış güçlü ve modern bir araçtır. Basit analizörlerin aksine, gerçek dünyadaki çalıştırılabilir dosyaları (EXE, DLL, SYS, BIN, ELF) destekler ve x86 mimarisi dağılımı, entropi ve kod yapısı hakkında derinlemesine bilgi sağlar.
+![C++17](https://img.shields.io/badge/C++-17-00599C?style=flat-square&logo=cplusplus&logoColor=white)
+![Qt](https://img.shields.io/badge/Qt-6%20Widgets%20·%20Charts-41CD52?style=flat-square&logo=qt&logoColor=white)
+![CMake](https://img.shields.io/badge/CMake-3.20+-064F8C?style=flat-square&logo=cmake&logoColor=white)
+![Version](https://img.shields.io/badge/version-2.0-fbbf24?style=flat-square)
+![License](https://img.shields.io/badge/license-MIT-22c55e?style=flat-square)
 
----
+[Features](#-features) · [How it works](#-how-it-works) · [Build](#-build) · [Report](OpcodeAnalyzer_IEEE_Report.pdf) · [Türkçe](#-türkçe)
 
-## 🚀 Key Features | Temel Özellikler
-
-### 🔍 Deep Binary Analysis | Derin Binary Analizi
-- **Multi-Format Support:** Analyze `.exe`, `.dll`, `.sys`, `.bin`, `.elf`, `.com`, and more.
-- **Smart PE Parsing:** Automatically detects and focuses on the `.text` (code) section of Windows executables for accurate analysis.
-- **x86 Opcode Coverage:** Comprehensive mapping of single-byte x86 instructions across 9 categories (Arithmetic, Logic, Data Transfer, Control Flow, etc.).
-- **Entropy Analysis:** Calculates Shannon Entropy to detect packed or encrypted code segments.
-
-### 🎨 Modern UI/UX | Modern Kullanıcı Deneyimi
-- **Fluent Design:** A premium, state-of-the-art interface inspired by modern design systems.
-- **Theme Support:** Fully integrated Dark and Light modes with high-contrast cyan accents.
-- **Interactive Charts:** Visual distribution of opcode categories using interactive pie and bar charts.
-- **Disassembly View:** A clean, per-byte disassembly table with categorical color coding.
-
-### 📊 Reporting & Comparison | Raporlama ve Karşılaştırma
-- **Export Options:** Export detailed analysis reports in professional **CSV** or **HTML** formats.
-- **Side-by-Side Comparison:** Compare two different binary files to see differences in instruction distribution and code structure.
+</div>
 
 ---
 
-## 🛠️ Technology Stack | Teknolojik Yapı
+Open an `.exe`, `.dll`, `.sys`, `.bin` or any raw file, and the analyzer shows what kind of code is
+inside: how much of it moves data, does arithmetic or branches, whether a region looks **packed or
+encrypted**, and how two binaries differ. The project was built for an Object-Oriented Programming course
+and is written up in an [IEEE-style report](OpcodeAnalyzer_IEEE_Report.pdf).
 
-- **Language:** C++17
-- **Framework:** Qt 6 (Widgets, Charts)
-- **Build System:** CMake
-- **Design:** Custom QSS (Qt Style Sheets) with Fluent/Glassmorphism influence.
+## ✨ Features
 
----
+- **PE-aware loading**: detects Windows PE files and focuses the analysis on the `.text` code section. Any other file is analysed as a raw byte stream.
+- **x86 opcode table**: maps single-byte opcodes into **9 categories**: data transfer, arithmetic, logic, control flow, string, bit-shift, system, FPU and prefixes.
+- **Entropy analysis**: Shannon entropy highlights packed or encrypted segments.
+- **Disassembly view**: per-byte table with colour-coded categories.
+- **Interactive charts**: pie and bar charts of the category distribution (Qt Charts).
+- **Compare mode**: put two binaries side by side and diff their instruction profiles.
+- **Reports**: export results as **CSV** or **HTML**.
+- **Dark and light themes**: custom QSS with high-contrast cyan accents, plus a recent-files list.
+- **`opcgen` tool**: generates sample `.opc` programs (`hello`, `loop`, `packed`) for testing low- and high-entropy cases.
 
-## 📥 Installation | Kurulum
+## 🧩 How it works
 
-### Prerequisites | Gereksinimler
-- CMake 3.20+
-- Qt 6.0+
-- MSVC 2022 / GCC / Clang
-
-### Build Instructions | Derleme Adımları
-```bash
-# Clone the repository | Depoyu kopyalayın
-git clone https://github.com/yourusername/OpcodeAnalyzer.git
-cd OpcodeAnalyzer
-
-# Create build directory | Build dizini oluşturun
-mkdir build
-cd build
-
-# Configure and Build | Yapılandırın ve Derleyin
-cmake ..
-cmake --build . --config Release
+```mermaid
+flowchart LR
+    F[Binary file] --> B[BinaryFile<br/>PE detection · .text]
+    B --> D[Disassembler]
+    D --> IF[InstructionFactory]
+    IF --> I1[Arithmetic] & I2[Logical] & I3[ControlFlow] & I4[Memory] & I5[IO]
+    I1 & I2 & I3 & I4 & I5 --> P[Program]
+    P --> A[Analyzers<br/>Frequency · Category · Entropy · Comparison]
+    A --> R[Report<br/>CSV · HTML]
+    A --> UI[Qt UI<br/>Summary · Charts · Disassembly · Compare]
 ```
 
+The core follows classic OOP. An abstract `Instruction` hierarchy is created through a
+**factory**, and pluggable `Analyzer` strategies run over a `Program`.
+
+## 🚀 Build
+
+Requirements: CMake 3.20+, Qt 6 (Widgets and Charts), and MSVC 2022, GCC or Clang.
+
+```bash
+git clone https://github.com/Soap2647/Binary-Opcode-Analyzer.git
+cd Binary-Opcode-Analyzer
+cmake -B build -DCMAKE_PREFIX_PATH=/path/to/Qt/6.x/<kit>
+cmake --build build --config Release
+```
+
+On Windows, the build runs `windeployqt6` automatically so the executable can be started directly.
+
+## 📁 Project structure
+
+```
+src/
+├── core/       BinaryFile, Disassembler, OpcodeTable, Instruction hierarchy, Program
+├── analysis/   Frequency, Category, Entropy and Comparison analyzers, Report
+├── ui/         MainWindow, SummaryView, ChartView, DisassemblyView, CompareView, ThemeManager
+├── tools/      opcgen (sample generator)
+└── main.cpp
+resources/      QSS themes
+samples/        hello.opc, loop.opc, packed.opc
+```
+
+## 🇹🇷 Türkçe
+
+**Binary Opcode Analiz Aracı**, derlenmiş dosyaların içindeki x86 talimatlarını inceleyen bir Qt masaüstü
+uygulamasıdır. PE dosyalarında `.text` bölümünü bulur, opcode'ları 9 kategoriye ayırır, Shannon entropisi ile
+paketlenmiş/şifrelenmiş bölgeleri işaret eder, iki dosyayı yan yana karşılaştırır ve sonuçları CSV/HTML olarak
+dışa aktarır. Nesneye Yönelik Programlama dersi kapsamında geliştirilmiştir. Ayrıntılar IEEE formatındaki raporda yer alır.
+
 ---
 
-## 🤝 Contributing | Katkıda Bulunma
-Contributions, issues, and feature requests are welcome!
-Katkılarınız, sorun bildirimleriniz ve özellik talepleriniz bekliyoruz!
-
----
-
-## 📄 License | Lisans
-This project is licensed under the MIT License.
-Bu proje MIT Lisansı ile lisanslanmıştır.
-
----
-*Developed as an Academic Project for Object-Oriented Programming.*
-*Nesneye Yönelik Programlama dersi kapsamında geliştirilmiştir.*
+<div align="center"><sub>MIT License · Built by <a href="https://github.com/Soap2647">Mert Yasin Yılmaz</a></sub></div>
